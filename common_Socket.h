@@ -1,0 +1,8 @@
+//
+// Created by riedel on 12/10/20.
+//
+
+#ifndef CLIONPROJECTS_COMMON_SOCKET_H
+#define CLIONPROJECTS_COMMON_SOCKET_H
+
+#endif //CLIONPROJECTS_COMMON_SOCKET_H

@@ -3,15 +3,15 @@
 //
 
 
-#include "common_file_reader.h"
+#include "common_FileReader.h"
 #include <stdlib.h>
 
 
-void file_reader_standard_init(file_reader_t* self){
+void fileReaderStandardInit(FileReader* self){
     self->file = stdin;
 }
 
-int file_reader_path_init(file_reader_t* self,char* path){
+int fileReaderPathInit(FileReader* self, char* path){
     self->file = fopen(path,"r");
     if(self ==  NULL){
         return -1;
@@ -19,13 +19,13 @@ int file_reader_path_init(file_reader_t* self,char* path){
     return 0;
 }
 
-void file_reader_uninit(file_reader_t* self) {
+void fileReaderUninit(FileReader* self) {
     if (self->file != stdin && self->file != NULL) {
         fclose(self->file);
     }
 }
 
-size_t file_reader_read(file_reader_t* self, char* buffer, size_t size){
+size_t fileReaderRead(FileReader* self, char* buffer, size_t size){
 
     if( feof(self->file) ){ //si justo se habia llegado al final del archivo.
         return 0;
