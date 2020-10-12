@@ -2,8 +2,8 @@
 // Created by riedel on 12/10/20.
 //
 
-#ifndef CLIONPROJECTS_FILE_READER_H
-#define CLIONPROJECTS_FILE_READER_H
+#ifndef CLIONPROJECTS_COMMON_FILE_READER_H
+#define CLIONPROJECTS_COMMON_FILE_READER_H
 
 #include <stdio.h>
 
@@ -38,4 +38,4 @@ void file_reader_uninit(file_reader_t* self);
 
 
 
-#endif //CLIONPROJECTS_FILE_READER_H
+#endif //CLIONPROJECTS_COMMON_FILE_READER_H

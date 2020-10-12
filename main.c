@@ -1,9 +1,11 @@
 #include <stdio.h>
-#include "file_reader.h"
+#include "common_file_reader.h"
 
 int main(){
-    size_t tope = 50;
-    char mensaje [50];
+    size_t tope = 64;
+    char mensaje [65];
+    mensaje[64] = NULL;
+
     file_reader_t lector;
     file_reader_standard_init(&lector);
     printf("se inicio correctamente");
