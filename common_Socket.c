@@ -3,3 +3,13 @@
 //
 
 #include "common_Socket.h"
+
+
+void socketInit(Socket* this){
+
+}
+
+void socketUninit(Socket* this){
+
+}
+
