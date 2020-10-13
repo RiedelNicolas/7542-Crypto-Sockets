@@ -92,18 +92,17 @@ ssize_t socketRecv(Socket* this, char* buffer, size_t len){
 int socketBindAndListen(Socket* this, const char* port, int maxListen){
 
     struct addrinfo *result, *current;
-    int fd;
 
     int error = _getaddrinfo(&result,SERVER_MODE,NULL,port );
     if(error!=0) return FAILURE;
 
     for ( current = result; current!=NULL; current=current->ai_next ){
-        fd = socket(current->ai_family,current->ai_socktype,current->ai_protocol);
-        if (fd == -1) continue;
+        this->fd = socket(current->ai_family,current->ai_socktype,current->ai_protocol);
+        if (this->fd == -1) continue;
         int val = 1;
-        setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
-        if(bind(fd,current->ai_addr,current->ai_addrlen) == 0 ) break; //success
-        close(fd);
+        setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+        if(bind(this->fd,current->ai_addr,current->ai_addrlen) == 0 ) break; //success
+        close(this->fd);
     }
     freeaddrinfo(result); //already used
     if(current == NULL){
@@ -112,7 +111,7 @@ int socketBindAndListen(Socket* this, const char* port, int maxListen){
     }
 
     freeaddrinfo(result);
-    listen(fd,maxListen);
+    listen(this->fd,maxListen);
 }
 
 /*
