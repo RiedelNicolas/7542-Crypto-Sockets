@@ -66,7 +66,7 @@ ssize_t socketSend(Socket* this, const char* buffer, size_t len){
     ssize_t sent = 0,current = 0;
 
     while (sent<len ){
-        current = (this->fd,&buffer[sent],len-sent,MSG_NOSIGNAL);
+        current = send(this->fd,&buffer[sent],len-sent,MSG_NOSIGNAL);
         if(current == -1){
             return FAILURE;
         }
