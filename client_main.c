@@ -1,0 +1,15 @@
+//
+// Created by riedel on 13/10/20.
+//
+
+#include "client.h"
+
+int main(int argc, char** argv){
+    char mensaje[50]; strcat(mensaje,"hola server xD");
+    Client client;
+    clientInit(&client);
+    clientConnect(&client,argv[1],argv[2]);
+    clientSend(&client,mensaje,strlen(mensaje) );
+    clientUninit(&client);
+    return 0;
+}
