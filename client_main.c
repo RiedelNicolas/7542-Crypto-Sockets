@@ -9,7 +9,7 @@ int main(int argc, char** argv){
     Client client;
     clientInit(&client);
     clientConnect(&client,argv[1],argv[2]);
-    clientSend(&client,mensaje,strlen(mensaje) );
+    clientSend(&client,mensaje,strlen(mensaje) + 1 );
     clientUninit(&client);
     return 0;
 }
