@@ -2,7 +2,6 @@
 // Created by riedel on 12/10/20.
 //
 
-#include <stdbool.h>
 #include "common_Socket.h"
 #define FAILURE -1
 #define SUCCESS 0
@@ -11,6 +10,7 @@
 #define SERVER_MODE 'S'
 
 //ojo que esta no hace free
+
 static int _getaddrinfo(struct addrinfo** result, const char mode,const char* host, const char* port ){
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints) );memset(&hints, 0, sizeof(hints) );
@@ -44,7 +44,7 @@ int socketConnect(Socket* this, const char* host, const char* port ){
     error = _getaddrinfo(&result,CLIENT_MODE,host,port);
     if(error != 0) return FAILURE;
 
-    for (current = result; current !=NULL ; current->ai_next) {
+    for (current = result; current !=NULL ; current = current->ai_next) {
         this->fd = socket(current->ai_family,current->ai_socktype,current->ai_protocol);
         if(this->fd==INVALID_FD) {
             continue;
@@ -112,12 +112,12 @@ int socketBindAndListen(Socket* this, const char* port, int maxListen){
 
     freeaddrinfo(result);
     listen(this->fd,maxListen);
+    return SUCCESS;
 }
 
 /*
  acepta un cliente, supongo socket correctamente inciado */
 void socketAcceptOne(Socket* this, Socket* peer){
-
     peer->fd = accept(this->fd,NULL,NULL);
     if(peer->fd  == -1){
         fprintf(stderr,"unable to receive peer\n %s", strerror(errno) );

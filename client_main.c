@@ -5,7 +5,7 @@
 #include "client.h"
 
 int main(int argc, char** argv){
-    char mensaje[50]; strcat(mensaje,"hola server xD");
+    char mensaje[50]; strcpy(mensaje,"Ping");
     Client client;
     clientInit(&client);
     clientConnect(&client,argv[1],argv[2]);
