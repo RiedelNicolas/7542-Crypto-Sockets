@@ -3,13 +3,26 @@
 //
 
 #include "client.h"
+#include <stdio.h>
+#include "common_FileReader.h"
+
+#define SIZE_BUFFER 64
 
 int main(int argc, char** argv){
-    char mensaje[50]; strcpy(mensaje,"Ping");
+    char buffer[SIZE_BUFFER];
+    FileReader fileReader;
+    fileReaderStandardInit(&fileReader);
     Client client;
     clientInit(&client);
     clientConnect(&client,argv[1],argv[2]);
-    clientSend(&client,mensaje,strlen(mensaje) + 1 );
+
+    size_t leido;
+    do {
+        leido = fileReaderRead(&fileReader,buffer,SIZE_BUFFER);
+        printf("se hizo un read");
+        clientSend(&client,buffer, leido);
+    }while (leido==SIZE_BUFFER);
+
     clientUninit(&client);
     return 0;
 }

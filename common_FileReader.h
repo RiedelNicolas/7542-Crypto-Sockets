@@ -9,7 +9,7 @@
 
 #define INITIAL_BUFFER_SIZE 64
 
-typedef struct FileReader {
+typedef struct {
     FILE* file;
 }FileReader;
 

@@ -84,7 +84,7 @@ ssize_t socketRecv(Socket* this, char* buffer, size_t len){
             fprintf(stderr,"unable to recv data\n %s", strerror(errno) ) ;
             return FAILURE;
         }
-        if(current == 0 )break;
+        if(current == 0 )break;//se cerro el socket, salvamos los datos que llegaron hasta ahora.
         received+=current;
     }
     return received;
@@ -105,13 +105,13 @@ int socketBindAndListen(Socket* this, const char* port, int maxListen){
         if(bind(this->fd,current->ai_addr,current->ai_addrlen) == 0 ) break; //success
         close(this->fd);
     }
-    freeaddrinfo(result); //already used
+
+    freeaddrinfo(result);
     if(current == NULL){
         fprintf(stderr, "couldnt bind \n");
         return FAILURE;
     }
 
-    freeaddrinfo(result);
     listen(this->fd,maxListen);
     return SUCCESS;
 }
