@@ -3,11 +3,11 @@
 //
 
 
-#include "common_FileReader.h"
+#include "common_Courrier.h"
 #include <stdlib.h>
 
 
-void fileReaderStandardInit(FileReader* self){
+void courrier_init(FileReader* self){
     self->file = stdin;
 }
 
@@ -30,9 +30,7 @@ size_t fileReaderRead(FileReader* self, char* buffer, size_t size){
     if( feof(self->file) ){ //si justo se habia llegado al final del archivo.
         return 0;
     }
-
     return  fread(buffer,sizeof(char) ,size , self->file);
-
 }
 
 
