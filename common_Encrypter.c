@@ -6,16 +6,14 @@
 #include <stdlib.h> //for ATOI
 #define SUCCESS 0
 #define FAILURE -1
+#define ENCRYPT_MODE  1
+#define DECRYPT_MODE  -1
 
 //Privadas
 
-void _encrpyterEncryptCesar(Encrypter* this, char* msg, size_t size);
-void _encrypterEncryptRC4(Encrypter* this, char* msg, size_t size);
-void _encrypterEncryptVignere(Encrypter* this, char* msg, size_t size);
-
-void _encrpyterDecryptCesar(Encrypter* this, char* msg, size_t size);
-void _encrypterDecryptRC4(Encrypter* this, char* msg, size_t size);
-void _encrypterDecryptVignere(Encrypter* this, char* msg, size_t size);
+void _encrpyterCesar(Encrypter* this, char* msg, size_t size, int mode);
+void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode );
+void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode);
 
 //publicas
 int encrypterInit(Encrypter* this, char* method, char* key ){
@@ -23,18 +21,15 @@ int encrypterInit(Encrypter* this, char* method, char* key ){
     this->cursor = 0;
 
     if( !strcmp(method, CESAR) ){
-        (this->encryptFunction)  = & (_encrpyterEncryptCesar);
-        this->decryptFunction  = & (_encrpyterDecryptCesar);
+        this->function  = & _encrpyterCesar;
         return SUCCESS ;
     }
     if( !strcmp(method, RC4) ){
-        this->encryptFunction = &_encrypterEncryptRC4;
-        this->decryptFunction  = &_encrypterDecryptRC4;
+        this->function = &_encrypterRC4;
         return SUCCESS;
     }
     if( !strcmp(method, VIGNERE) ){
-        this->encryptFunction =  & _encrypterEncryptVignere;
-        this->decryptFunction  = &_encrypterDecryptVignere;
+        this->function =  & _encrypterVignere;
         return SUCCESS;
     }
     fprintf(stderr, "unknow encryption method \n");
@@ -42,31 +37,34 @@ int encrypterInit(Encrypter* this, char* method, char* key ){
 }
 
 void encryptorEncrypt(Encrypter* this, char* msg, size_t size){
-    this->encryptFunction(this,msg,size);
+    this->function(this,msg,size, ENCRYPT_MODE);
+    (this->cursor)+=size;
 }
 
 void encrypterDecrypt(Encrypter* this, char* msg, size_t size){
-    this->decryptFunction(this,msg,size);
+    this->function(this,msg,size, DECRYPT_MODE);
+    (this->cursor)+=size;
 }
 
 void encryptorReset(Encrypter* this){
     this->cursor = 0;
 }
+
 void encrpytorUninit(Encrypter* this){
     this->key = NULL;
     this->cursor = 0;
-    this->decryptFunction = NULL;
-    this->encryptFunction = NULL;
+    this->function = NULL;
 }
 
 
 
-void _encrpytorCesar(Encrypter* this, char* msg, size_t size){
+void _encrpytorCesar(Encrypter* this, char* msg, size_t size, int mode){
     int key = atoi(this->key);
     for (size_t i = 0; i < size ; i++){
-        msg[i] = msg[i] + key ;
+        msg[i] += (key*mode) ;
     }
 }
+
 
 void _encryptorRC4(Encrypter* this, char* msg, size_t size);
 void _encryptorVignere(Encrypter* this, char* msg, size_t size);

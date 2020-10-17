@@ -15,8 +15,7 @@
 typedef struct Encrypter{
     size_t cursor; //para acordarme en que numero de iteracion estoy.
     char* key;
-    void (*encryptFunction)(struct Encrypter*, char*, size_t);
-    void (*decryptFunction)(struct Encrypter*, char*, size_t);
+    void (*function)(struct Encrypter*, char*, size_t, int);
 }Encrypter;
 
 
