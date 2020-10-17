@@ -12,12 +12,11 @@
 #define RC4 "rc4"
 #define VIGNERE "vignere"
 
-typedef struct{
+typedef struct Encryptor{
     size_t cursor; //para acordarme en que numero de iteracion estoy.
     char* key;
-    char* method;
-    void (*encryptFunction)(struct Encryptor*, char*, char*);
-    void (*decryptFunction)(struct Encryptor*, char*, char*);
+    void (*encryptFunction)(struct Encryptor*, char*, size_t);
+    void (*decryptFunction)(struct Encryptor*, char*, size_t);
 }Encryptor;
 
 

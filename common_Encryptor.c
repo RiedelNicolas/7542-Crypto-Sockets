@@ -21,19 +21,19 @@ int encryptorInit(Encryptor* this, char* method, char* key ){
     this->key = key;
     this->cursor = 0;
 
-    if( !strcmp(this->method, CESAR) ){
-        this->encryptFunction  =
-        this->decryptFunction  =
+    if( !strcmp(method, CESAR) ){
+        (this->encryptFunction)  = & (_encrpytorEncryptCesar);
+        this->decryptFunction  = & (_encrpytorDecryptCesar);
         return SUCCESS ;
     }
-    if( !strcmp(this->method, RC4) ){
-        this->encryptFunction =
-        this->decryptFunction  =
+    if( !strcmp(method, RC4) ){
+        this->encryptFunction = &_encryptorEncryptRC4;
+        this->decryptFunction  = &_encryptorDecryptRC4;
         return SUCCESS;
     }
-    if( !strcmp(this->method, VIGNERE) ){
-        this->encryptFunction =
-        this->decryptFunction  =
+    if( !strcmp(method, VIGNERE) ){
+        this->encryptFunction =  & _encryptorEncryptVignere;
+        this->decryptFunction  = &_encryptorDecryptVignere;
         return SUCCESS;
     }
     fprintf(stderr, "unknow encryption method \n");
