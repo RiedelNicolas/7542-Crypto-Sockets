@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "errno.h"
-typedef struct{
+typedef struct Socket{
     int fd;
 }Socket;
 
