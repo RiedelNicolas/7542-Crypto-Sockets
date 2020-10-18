@@ -19,7 +19,7 @@ typedef struct Courier{
 
 
 /*
- * Inicia
+ * Iniciamos
  */
 int courierInit(Courier* this,char* method, char* key , char* host, char* port);
 
@@ -29,7 +29,7 @@ int courierInit(Courier* this,char* method, char* key , char* host, char* port);
  * Lee del File* asociado el reader, lee hasta llenar el buffer o que finaliza el archivo.
  * devuelve cuantos caracteres pudo leer correctamente.
  */
-size_t courierRun(Courier* this, char* buffer, size_t bufferSize);
+void courierRun(Courier* this, char* buffer, size_t bufferSize);
 
 /*
  * destructor, libera recursos.

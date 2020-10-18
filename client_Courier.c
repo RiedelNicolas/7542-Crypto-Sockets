@@ -5,6 +5,7 @@
 
 #include "client_Courier.h"
 #include <stdlib.h>
+#define STDIN stdin
 
 
 int courierInit(Courier* this,char* method, char* key, char* host, char* port){
@@ -13,27 +14,29 @@ int courierInit(Courier* this,char* method, char* key, char* host, char* port){
     return clientConnect(&(this->client), host, port);
 }
 
-size_t courierRun(Courier* this, char* buffer, size_t bufferSize){
+size_t _courierRead(Courier* this, char* buffer, size_t bufferSize){
 
-    if( feof(this->file) ){ //si justo se habia llegado al final del archivo.
+    if( STDIN ) { //si justo se habia llegado al final del archivo.
         return 0;
     }
-    return  fread(buffer,sizeof(char) ,size , self->file);
+    return  fread(buffer,sizeof(char) ,bufferSize , STDIN);
+}
+
+void courierRun(Courier* this, char* buffer, size_t bufferSize){
+
+    size_t read;
+    do{
+        read = _courierRead(this, buffer, bufferSize);
+        encrypterEncrypt(&(this->encrypter),buffer,read);
+        clientSend(&(this->client), buffer, read);
+    }while( read != 0);
 
 }
 
-size_t fileReaderRead(Courier* this, char* buffer, size_t size){
-
-    if( feof(self->file) ){ //si justo se habia llegado al final del archivo.
-        return 0;
-    }
-    return  fread(buffer,sizeof(char) ,size , self->file);
-}
 
 
 void courierUninit(Courier* this) {
-    if (self->file != stdin && self->file != NULL) {
-        fclose(self->file);
-    }
+    encrypterUninit(&(this->encrypter));
+    clientUninit(&(this->client));
 }
 
