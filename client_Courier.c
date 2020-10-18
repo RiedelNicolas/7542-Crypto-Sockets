@@ -3,23 +3,16 @@
 //
 
 
-#include "common_Courrier.h"
+#include "client_Courier.h"
 #include <stdlib.h>
 
 
-void courrier_init(FileReader* self){
+void CourierInit(FileReader* self){
     self->file = stdin;
 }
 
-int fileReaderPathInit(FileReader* self, char* path){
-    self->file = fopen(path,"r");
-    if(self ==  NULL){
-        return -1;
-    }
-    return 0;
-}
 
-void fileReaderUninit(FileReader* self) {
+void CourierUninit(FileReader* self) {
     if (self->file != stdin && self->file != NULL) {
         fclose(self->file);
     }
