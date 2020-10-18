@@ -13,25 +13,28 @@
 #define INITIAL_BUFFER_SIZE 64
 
 typedef struct Courier{
-    size_t leidos;
+    Encrypter encrypter;
+    Client  client;
 }Courier;
 
 
 /*
  * Inicia
  */
-void CourierInit(Courier* self);
+int courierInit(Courier* this,char* method, char* key , char* host, char* port);
+
+
 
 /*
  * Lee del File* asociado el reader, lee hasta llenar el buffer o que finaliza el archivo.
  * devuelve cuantos caracteres pudo leer correctamente.
  */
-size_t CourierRun(Courier* self, char* buffer, size_t size);
+size_t courierRun(Courier* this, char* buffer, size_t bufferSize);
 
 /*
  * destructor, libera recursos.
  */
-void fileReaderUninit(FileReader* self);
+void fileReaderUninit(Courier* this);
 
 
 

@@ -7,18 +7,22 @@
 #include <stdlib.h>
 
 
-void CourierInit(FileReader* self){
-    self->file = stdin;
+int courierInit(Courier* this,char* method, char* key, char* host, char* port){
+    encrypterInit(&(this->encrypter), method, key);
+    clientInit(&(this->client));
+    return clientConnect(&(this->client), host, port);
 }
 
+size_t courierRun(Courier* this, char* buffer, size_t bufferSize){
 
-void CourierUninit(FileReader* self) {
-    if (self->file != stdin && self->file != NULL) {
-        fclose(self->file);
+    if( feof(this->file) ){ //si justo se habia llegado al final del archivo.
+        return 0;
     }
+    return  fread(buffer,sizeof(char) ,size , self->file);
+
 }
 
-size_t fileReaderRead(FileReader* self, char* buffer, size_t size){
+size_t fileReaderRead(Courier* this, char* buffer, size_t size){
 
     if( feof(self->file) ){ //si justo se habia llegado al final del archivo.
         return 0;
@@ -27,5 +31,9 @@ size_t fileReaderRead(FileReader* self, char* buffer, size_t size){
 }
 
 
-
+void courierUninit(Courier* this) {
+    if (self->file != stdin && self->file != NULL) {
+        fclose(self->file);
+    }
+}
 
