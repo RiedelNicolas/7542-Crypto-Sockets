@@ -13,9 +13,9 @@
 int main(int argc, char** argv) {
     int opt = 0;
     int long_index = 0;
-    char* method, *key, *host, *port;
-    host = argv[POS_HOST];
-    port  = argv[POS_PORT];
+    char* method = NULL, *key = NULL;
+    char* host = argv[POS_HOST];
+    char* port  = argv[POS_PORT];
 
     static struct option long_options[] = {
         {"method", required_argument, NULL, 'm'},
