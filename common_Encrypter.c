@@ -40,12 +40,10 @@ int encrypterInit(Encrypter* this, char* method, char* key) {
 
 void encrypterEncrypt(Encrypter* this, char* msg, size_t size) {
     this->function(this, msg, size, ENCRYPT_MODE);
-    (this->cursor)+=size;
 }
 
 void encrypterDecrypt(Encrypter* this, char* msg, size_t size) {
     this->function(this, msg, size, DECRYPT_MODE);
-    (this->cursor)+=size;
 }
 
 void encrypterReset(Encrypter* this) {
@@ -98,9 +96,9 @@ void _encrypterRC4(Encrypter* this, char* msg, size_t size, int mode) {
 
 void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode) {
     char* key = this->key;
-    size_t cursor = this->cursor;
 
     for (size_t i = 0; i < size ; i++) {
-        msg[i] +=  (key[ (cursor%strlen(key) ) ]*mode);
+        msg[i] +=  (key[ ( (this->cursor)%strlen(key) ) ]*mode);
+        (this->cursor)++;
     }
 }
