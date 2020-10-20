@@ -65,10 +65,10 @@ int socketConnect(Socket* this, const char* host, const char* port) {
 }
 //  hablando con eze llegamos a que send no puede mandar 0
 ssize_t socketSend(Socket* this, const char* buffer, size_t len) {
-    ssize_t current, sent = 0;
+    ssize_t sent = 0;
 
     while (sent < len) {
-        current = send(this->fd, &buffer[sent], len-sent, MSG_NOSIGNAL);
+        ssize_t current = send(this->fd, &buffer[sent], len-sent, MSG_NOSIGNAL);
         if (current == -1) {
             fprintf(stderr, "unable to send data\n %s", strerror(errno));
             return FAILURE;
@@ -79,9 +79,9 @@ ssize_t socketSend(Socket* this, const char* buffer, size_t len) {
 }
 
 ssize_t socketRecv(Socket* this, char* buffer, size_t len) {
-    ssize_t current, received = 0;
+    ssize_t received = 0;
     while (received < len) {
-        current = recv(this->fd, &buffer[received], len - received, 0);
+        ssize_t current = recv(this->fd, &buffer[received], len - received, 0);
         if (current == -1) {
             fprintf(stderr, "unable to recv data\n %s", strerror(errno));
             return FAILURE;

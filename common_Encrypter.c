@@ -53,9 +53,7 @@ void encrypterReset(Encrypter* this) {
 }
 
 void encrypterUninit(Encrypter* this) {
-    this->key = NULL;
-    this->cursor = 0;
-    this->function = NULL;
+    encrypterReset(this);
 }
 
 
@@ -70,13 +68,12 @@ void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode) {
 void _encrypterRC4GenerateSemiRandom(struct Encrypter* this) {
     int len = strlen(this->key);
     int i, j = 0;
-    unsigned char temp;
     for ( i = 0; i < SEMI_RANDOM_SIZE ; ++i ) {
         (this->semiRandom)[i] = i;
     }
     for (i = 0; i < SEMI_RANDOM_SIZE ; ++i) {
         j = ((j+ (this->semiRandom)[i] + (this->key)[i%len] ) %256);
-        temp = (this->semiRandom)[i];
+        unsigned char temp = (this->semiRandom)[i];
         (this->semiRandom)[i] = (this->semiRandom)[j];
         (this->semiRandom)[j] = temp;
     }
@@ -87,11 +84,10 @@ void _encrypterRC4(Encrypter* this, char* msg, size_t size, int mode) {
     // ya tenemos generado el semirandom.
     size_t j = 0;
     unsigned char* random = this->semiRandom;
-    char temp;
     for (size_t i = 0; i < size ; ++i) {
         i = (i+1)%SEMI_RANDOM_SIZE;
         j = (j + random[i]) %SEMI_RANDOM_SIZE;
-        temp = (random)[i];
+        char temp = (random)[i];
         (random)[i] = (random)[j];
         (random)[j] = temp;
         char round = random[random[i] + random[j] %SEMI_RANDOM_SIZE];
