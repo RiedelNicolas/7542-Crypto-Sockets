@@ -6,6 +6,8 @@
 
 #include  "server_Receiver.h"
 #include "common_Parser.h"
+#define SUCCESS 0
+#define FAILURE -1
 
 #define SIZE_BUFFER 64
 
@@ -14,12 +16,20 @@ int main(int argc, char** argv) {
     Receiver receiver;
     Parser parser;
 
-
     parserInit(&parser, SERVER_MODE);
-    parserParse(&parser, argv, argc);
 
-    receiverInit(&receiver, parser.method, parser.key, parser.port);
+    if (parserParse(&parser, argv, argc) != SUCCESS) {
+        return FAILURE;
+    }
+
+    if (receiverInit(&receiver, parser.method,
+                    parser.key, parser.port) != SUCCESS) {
+        parserUninit(&parser);
+        return FAILURE;
+    }
+
     receiverRun(&receiver, buffer, SIZE_BUFFER);
     receiverUninit(&receiver);
-    return 0;
+    parserUninit(&parser);
+    return SUCCESS;
 }
