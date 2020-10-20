@@ -9,14 +9,14 @@
 #define ENCRYPT_MODE  1
 #define DECRYPT_MODE  -1
 
-// Privadas
+// private
 
 void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode);
 void _encrypterVigenere(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4GenerateSemiRandom(struct Encrypter* this);
 
-// publicas
+
 int encrypterInit(Encrypter* this, char* method, char* key) {
     this->key = key;
     this->cursor = 0;
@@ -50,6 +50,8 @@ void encrypterDecrypt(Encrypter* this, char* msg, size_t size) {
 
 void encrypterReset(Encrypter* this) {
     this->cursor = 0;
+    this->j = 0;
+    this->i = 0;
 }
 
 void encrypterUninit(Encrypter* this) {

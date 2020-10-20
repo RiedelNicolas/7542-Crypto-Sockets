@@ -9,8 +9,9 @@
 #define CLIENT_MODE 'C'
 #define SERVER_MODE 'S'
 
-// ojo que esta no hace free
 
+/* Wrapper for the function getAdrrInfo, it loads the associated struct with the wanted flags.
+ */
 static int _getaddrinfo(struct addrinfo** result, const char mode,
         const char* host, const char* port) {
     struct addrinfo hints;
