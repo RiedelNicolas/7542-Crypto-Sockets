@@ -10,10 +10,10 @@
 #define POS_PORT 2
 #define SIZE_BUFFER 64
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
     int opt = 0;
     int long_index = 0;
-    char* method,* key, *host, *port;
+    char* method, *key, *host, *port;
     host = argv[POS_HOST];
     port  = argv[POS_PORT];
 
@@ -22,8 +22,8 @@ int main(int argc, char** argv){
         {"key",    required_argument, NULL, 'k'},
         {NULL, 0,                     NULL, 0}
     };
-    while ((opt = getopt_long(argc, argv,":m:k:",
-                              long_options, &long_index )) != -1) {
+    while ((opt = getopt_long(argc, argv, ":m:k:",
+                              long_options, &long_index)) != -1) {
         switch (opt) {
             case 'm' : method = optarg;
                 break;
@@ -34,7 +34,7 @@ int main(int argc, char** argv){
 
     char buffer[SIZE_BUFFER];
     Courier courier;
-    courierInit(&courier,method,key, host,port);
-    courierRun(&courier,buffer,SIZE_BUFFER);
+    courierInit(&courier, method, key, host, port);
+    courierRun(&courier, buffer, SIZE_BUFFER);
     courierUninit(&courier);
 }

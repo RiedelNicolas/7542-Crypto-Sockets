@@ -8,28 +8,27 @@
 #define STDIN stdin
 
 
-int courierInit(Courier* this,char* method, char* key, char* host, char* port){
+int courierInit(Courier* this, char* method, char* key,
+                char* host, char* port) {
     encrypterInit(&(this->encrypter), method, key);
     clientInit(&(this->client));
     return clientConnect(&(this->client), host, port);
 }
 
-size_t _courierRead(Courier* this, char* buffer, size_t bufferSize){
-
-    if( feof(STDIN) ) { //si justo se habia llegado al final del archivo.
+size_t _courierRead(Courier* this, char* buffer, size_t bufferSize) {
+    if ( feof(STDIN) ) {  // si justo se habia llegado al final del archivo.
         return 0;
     }
-    return  fread(buffer,sizeof(char) ,bufferSize , STDIN);
+    return  fread(buffer, sizeof(char) , bufferSize , STDIN);
 }
 
-void courierRun(Courier* this, char* buffer, size_t bufferSize){
+void courierRun(Courier* this, char* buffer, size_t bufferSize) {
     size_t read;
-    do{
+    do {
         read = _courierRead(this, buffer, bufferSize);
-        encrypterEncrypt(&(this->encrypter),buffer,read);
+        encrypterEncrypt(&(this->encrypter), buffer, read);
         clientSend(&(this->client), buffer, read);
     }while( read == bufferSize);
-
 }
 
 

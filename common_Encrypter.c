@@ -3,34 +3,34 @@
 //
 
 #include "common_Encrypter.h"
-#include <stdlib.h> //for ATOI
+#include <stdlib.h>  // for ATOI
 #define SUCCESS 0
 #define FAILURE -1
 #define ENCRYPT_MODE  1
 #define DECRYPT_MODE  -1
 
-//Privadas
+// Privadas
 
 void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode);
-void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode );
+void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode);
 void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4GenerateSemiRandom(struct Encrypter* this);
 
-//publicas
-int encrypterInit(Encrypter* this, char* method, char* key ){
+// publicas
+int encrypterInit(Encrypter* this, char* method, char* key) {
     this->key = key;
     this->cursor = 0;
 
-    if( !strcmp(method, CESAR) ){
+    if ( !strcmp(method, CESAR) ) {
         this->function  = _encrypterCesar;
-        return SUCCESS ;
+        return SUCCESS;
     }
-    if( !strcmp(method, RC4) ){
+    if ( !strcmp(method, RC4) ) {
         this->function = _encrypterRC4;
         _encrypterRC4GenerateSemiRandom(this);
         return SUCCESS;
     }
-    if( !strcmp(method, VIGNERE) ){
+    if ( !strcmp(method, VIGNERE) ) {
         this->function =  _encrypterVignere;
         return SUCCESS;
     }
@@ -38,21 +38,21 @@ int encrypterInit(Encrypter* this, char* method, char* key ){
     return FAILURE;
 }
 
-void encrypterEncrypt(Encrypter* this, char* msg, size_t size){
-    this->function(this,msg,size, ENCRYPT_MODE);
+void encrypterEncrypt(Encrypter* this, char* msg, size_t size) {
+    this->function(this, msg, size, ENCRYPT_MODE);
     (this->cursor)+=size;
 }
 
-void encrypterDecrypt(Encrypter* this, char* msg, size_t size){
-    this->function(this,msg,size, DECRYPT_MODE);
+void encrypterDecrypt(Encrypter* this, char* msg, size_t size) {
+    this->function(this, msg, size, DECRYPT_MODE);
     (this->cursor)+=size;
 }
 
-void encrypterReset(Encrypter* this){
+void encrypterReset(Encrypter* this) {
     this->cursor = 0;
 }
 
-void encrypterUninit(Encrypter* this){
+void encrypterUninit(Encrypter* this) {
     this->key = NULL;
     this->cursor = 0;
     this->function = NULL;
@@ -60,22 +60,22 @@ void encrypterUninit(Encrypter* this){
 
 
 
-void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode){
+void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode) {
     int key = atoi(this->key);
-    for (size_t i = 0; i < size ; i++){
+    for (size_t i = 0; i < size ; i++) {
         msg[i] += (char) ( (key*mode) );
     }
 }
 
-void _encrypterRC4GenerateSemiRandom(struct Encrypter* this){
+void _encrypterRC4GenerateSemiRandom(struct Encrypter* this) {
     int len = strlen(this->key);
-    int i,j = 0;
+    int i, j = 0;
     unsigned char temp;
-    for ( i = 0; i < SEMI_RANDOM_SIZE ; ++i) {
+    for ( i = 0; i < SEMI_RANDOM_SIZE ; ++i ) {
         (this->semiRandom)[i] = i;
     }
     for (i = 0; i < SEMI_RANDOM_SIZE ; ++i) {
-        j = (( j+ (this->semiRandom)[i] + (this->key)[i%len] ) %256 ) ;
+        j = ((j+ (this->semiRandom)[i] + (this->key)[i%len] ) %256);
         temp = (this->semiRandom)[i];
         (this->semiRandom)[i] = (this->semiRandom)[j];
         (this->semiRandom)[j] = temp;
@@ -83,8 +83,8 @@ void _encrypterRC4GenerateSemiRandom(struct Encrypter* this){
 }
 
 
-void _encrypterRC4(Encrypter* this, char* msg, size_t size,int mode){
-    //ya tenemos generado el semirandom.
+void _encrypterRC4(Encrypter* this, char* msg, size_t size, int mode) {
+    // ya tenemos generado el semirandom.
     size_t j = 0;
     unsigned char* random = this->semiRandom;
     char temp;
@@ -100,11 +100,11 @@ void _encrypterRC4(Encrypter* this, char* msg, size_t size,int mode){
 }
 
 
-void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode){
+void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode) {
     char* key = this->key;
     size_t cursor = this->cursor;
 
-    for (size_t i = 0; i < size ; i++){
-        msg[i] +=  ( key[ (cursor%strlen(key) ) ]*mode ) ;
+    for (size_t i = 0; i < size ; i++) {
+        msg[i] +=  (key[ (cursor%strlen(key) ) ]*mode);
     }
 }

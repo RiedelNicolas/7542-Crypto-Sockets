@@ -2,8 +2,8 @@
 // Created by riedel on 12/10/20.
 //
 
-#ifndef CLIONPROJECTS_CLIENT_Courier_H
-#define CLIONPROJECTS_CLIENT_Courier_H
+#ifndef CLIENT_COURIER_H_
+#define CLIENT_COURIER_H_
 
 #include <stdio.h>
 #include "client.h"
@@ -12,7 +12,7 @@
 #define SOURCE stdin
 #define INITIAL_BUFFER_SIZE 64
 
-typedef struct Courier{
+typedef struct Courier {
     Encrypter encrypter;
     Client  client;
 }Courier;
@@ -21,7 +21,7 @@ typedef struct Courier{
 /*
  * Iniciamos
  */
-int courierInit(Courier* this,char* method, char* key , char* host, char* port);
+int courierInit(Courier* this, char* method, char* key, char* host, char* port);
 
 
 
@@ -39,4 +39,4 @@ void courierUninit(Courier* this);
 
 
 
-#endif //CLIONPROJECTS_CLIENT_Courier_H
+#endif  // CLIENT_COURIER_H_

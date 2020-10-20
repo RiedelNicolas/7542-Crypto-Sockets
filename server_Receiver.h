@@ -2,17 +2,17 @@
 // Created by riedel on 18/10/20.
 //
 
-#ifndef CLIONPROJECTS_SERVER_RECEIVER_H
-#define CLIONPROJECTS_SERVER_RECEIVER_H
+#ifndef SERVER_RECEIVER_H_
+#define SERVER_RECEIVER_H_
 
 #include "server.h"
 #include "common_Encrypter.h"
-typedef struct Receiver{
+typedef struct Receiver {
     Server server;
     Encrypter  encrypter;
 }Receiver;
 
-int receiverInit(Receiver* this,char* method, char* key , char* port);
+int receiverInit(Receiver* this, char* method, char* key , char* port);
 
 void receiverRun(Receiver* this, char* buffer, size_t bufferSize);
 
@@ -20,4 +20,4 @@ void receiverUninit(Receiver* this);
 
 
 
-#endif //CLIONPROJECTS_SERVER_RECEIVER_H
+#endif  // SERVER_RECEIVER_H_
