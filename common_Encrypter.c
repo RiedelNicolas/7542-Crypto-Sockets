@@ -13,7 +13,7 @@
 
 void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode);
-void _encrypterVIGENERE(Encrypter* this, char* msg, size_t size, int mode);
+void _encrypterVigenere(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4GenerateSemiRandom(struct Encrypter* this);
 
 // publicas
@@ -33,7 +33,7 @@ int encrypterInit(Encrypter* this, char* method, char* key) {
         return SUCCESS;
     }
     if ( !strcmp(method, VIGENERE) ) {
-        this->function =  _encrypterVIGENERE;
+        this->function =  _encrypterVigenere;
         return SUCCESS;
     }
     fprintf(stderr, "unknow encryption method \n");
@@ -102,7 +102,7 @@ void _encrypterRC4(Encrypter* this, char* msg, size_t size, int mode) {
 }
 
 
-void _encrypterVIGENERE(Encrypter* this, char* msg, size_t size, int mode) {
+void _encrypterVigenere(Encrypter* this, char* msg, size_t size, int mode) {
     char* key = this->key;
 
     for (size_t i = 0; i < size ; i++) {
