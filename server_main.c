@@ -3,40 +3,23 @@
 //
 
 
-#include <stdio.h>
-#include <getopt.h>
-#include  "server_Receiver.h"
 
-#define POS_PORT 1
+#include  "server_Receiver.h"
+#include "common_Parser.h"
 
 #define SIZE_BUFFER 64
 
 int main(int argc, char** argv) {
-    int opt = 0;
-    int long_index = 0;
-    char* method = NULL, *key = NULL;
-
-    char* port  = argv[POS_PORT];
-
-    static struct option long_options[] = {
-            {"method", required_argument, NULL, 'm'},
-            {"key",    required_argument, NULL, 'k'},
-            {NULL, 0,                     NULL, 0}
-    };
-    while ((opt = getopt_long(argc, argv, ":m:k:",
-                              long_options, &long_index)) != -1) {
-        switch (opt) {
-            case 'm' : method = optarg;
-                break;
-            case 'k' : key = optarg;
-                break;
-        }
-    }
-
     char buffer[SIZE_BUFFER];
     Receiver receiver;
+    Parser parser;
 
-    receiverInit(&receiver, method, key, port);
+
+    parserInit(&parser, SERVER_MODE);
+    parserParse(&parser, argv, argc);
+
+    receiverInit(&receiver, parser.method, parser.key, parser.port);
     receiverRun(&receiver, buffer, SIZE_BUFFER);
     receiverUninit(&receiver);
+    return 0;
 }
