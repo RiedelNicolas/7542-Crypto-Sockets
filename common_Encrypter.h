@@ -11,13 +11,15 @@
 #define CESAR "cesar"
 #define RC4 "rc4"
 #define VIGENERE "vigenere"
-#define SEMI_RANDOM_SIZE 256
+#define ASCII_SIZE 256
 
 typedef struct Encrypter {
     size_t cursor;  // para acordarme en que numero de iteracion estoy.
     char* key;
     void (*function)(struct Encrypter*, char*, size_t, int);
-    unsigned char semiRandom[SEMI_RANDOM_SIZE];
+    unsigned char r[ASCII_SIZE];
+    unsigned int j;
+    unsigned int i;
 }Encrypter;
 
 
