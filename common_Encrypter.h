@@ -10,7 +10,7 @@
 
 #define CESAR "cesar"
 #define RC4 "rc4"
-#define VIGNERE "vignere"
+#define VIGENERE "vigenere"
 #define SEMI_RANDOM_SIZE 256
 
 typedef struct Encrypter {
