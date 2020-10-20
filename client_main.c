@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
     parserInit(&parser, CLIENT_MODE);
     parserParse(&parser, argv, argc);
 
+
     courierInit(&courier, parser.method, parser.key, parser.host, parser.port);
     courierRun(&courier, buffer, SIZE_BUFFER);
 

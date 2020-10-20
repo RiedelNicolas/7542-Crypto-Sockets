@@ -64,7 +64,7 @@ void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode) {
         msg[i] += (char) ( (key*mode) );
     }
 }
-void _encrypterRC4Swap(struct Encrypter* this){
+void _encrypterRC4Swap(struct Encrypter* this) {
     unsigned char aux;
     aux = this->r[this->i];
     this->r[this->i] = this->r[this->j];
@@ -75,27 +75,27 @@ void _encrypterRC4GenerateSemiRandom(struct Encrypter* this) {
     this->i = 0;
     this->j = 0;
     size_t len = strlen(this->key);
-    for(this->i = 0; this->i < ASCII_SIZE; (this->i)++) {
-        this->r[this->i] =this->i;
+    for (this->i = 0; this->i < ASCII_SIZE; (this->i)++) {
+        this->r[this->i] = this->i;
     }
-    for(this->i = 0; this->i < ASCII_SIZE; (this->i)++) {
-        this->j = (this->j + this->key[(this->i)%len]+ this->r[this->i])% ASCII_SIZE;
+    for (this->i = 0; this->i < ASCII_SIZE; (this->i)++) {
+        this->j = (this->j + this->key[(this->i)%len]
+                + this->r[this->i])% ASCII_SIZE;
         _encrypterRC4Swap(this);
     }
     this->i = 0;
     this->j = 0;
 }
 
-unsigned char _encrypterRC4GenerateOutPut(struct Encrypter* this){
+unsigned char _encrypterRC4GenerateOutPut(struct Encrypter* this) {
     this->i = ((this->i) +1)%ASCII_SIZE;
-    this->j = ((this->j)+this->r[this->i] )%ASCII_SIZE;
+    this->j = ((this->j)+this->r[this->i])%ASCII_SIZE;
     _encrypterRC4Swap(this);
     return (this->r[(this->r[this->i] + this->r[this->j] )%ASCII_SIZE]);
 }
 
 
 void _encrypterRC4(Encrypter* this, char* msg, size_t size, int mode) {
-
     for (size_t i = 0; i < size ; i++) {
         msg[i] = (msg[i] ^ _encrypterRC4GenerateOutPut(this) );
     }
