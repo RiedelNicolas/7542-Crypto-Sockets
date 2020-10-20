@@ -16,20 +16,19 @@ int courierInit(Courier* this,char* method, char* key, char* host, char* port){
 
 size_t _courierRead(Courier* this, char* buffer, size_t bufferSize){
 
-    if( STDIN ) { //si justo se habia llegado al final del archivo.
+    if( feof(STDIN) ) { //si justo se habia llegado al final del archivo.
         return 0;
     }
     return  fread(buffer,sizeof(char) ,bufferSize , STDIN);
 }
 
 void courierRun(Courier* this, char* buffer, size_t bufferSize){
-
     size_t read;
     do{
         read = _courierRead(this, buffer, bufferSize);
         encrypterEncrypt(&(this->encrypter),buffer,read);
         clientSend(&(this->client), buffer, read);
-    }while( read != 0);
+    }while( read == bufferSize);
 
 }
 

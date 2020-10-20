@@ -34,7 +34,7 @@ void courierRun(Courier* this, char* buffer, size_t bufferSize);
 /*
  * destructor, libera recursos.
  */
-void fileReaderUninit(Courier* this);
+void courierUninit(Courier* this);
 
 
 

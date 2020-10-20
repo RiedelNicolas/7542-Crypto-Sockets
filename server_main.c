@@ -2,24 +2,17 @@
 // Created by riedel on 13/10/20.
 //
 
-#include  "server.h"
+#include  "server_receiver.h"
 
 #include <stdio.h>
 #define SIZE_BUFFER 64
 
 int main(int argc, char** argv){
     char buffer[SIZE_BUFFER];
-    ssize_t received;
-    Server  server;
-    serverInit(&server);
-    serverBindAndListen(&server,argv[1],10);
-    serverAcceptOne(&server);
+    Receiver receiver;
 
-    do{
-        received = serverRecv(&server,buffer,SIZE_BUFFER);
-        fwrite(buffer,  sizeof(char),received, stdout);
-    }while (received == SIZE_BUFFER); //SI RECIBO MENOS CORTE EL BUFFER EN ALGUN MOMENTO DEL OTRO LADO.
+    receiverInit(&receiver,argv[2],argv[3],argv[1]);
+    receiverRun(&receiver,buffer,SIZE_BUFFER);
+    receiverUninit(&receiver);
 
-    serverUninit(&server);
-    return 0;
 }

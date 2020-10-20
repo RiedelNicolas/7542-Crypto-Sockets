@@ -11,9 +11,10 @@
 
 //Privadas
 
-void _encrpyterCesar(Encrypter* this, char* msg, size_t size, int mode);
+void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode);
 void _encrypterRC4(Encrypter* this, char* msg, size_t size,  int mode );
 void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode);
+void _encrypterRC4GenerateSemiRandom(struct Encrypter* this);
 
 //publicas
 int encrypterInit(Encrypter* this, char* method, char* key ){
@@ -21,15 +22,16 @@ int encrypterInit(Encrypter* this, char* method, char* key ){
     this->cursor = 0;
 
     if( !strcmp(method, CESAR) ){
-        this->function  = & _encrpyterCesar;
+        this->function  = _encrypterCesar;
         return SUCCESS ;
     }
-   /* if( !strcmp(method, RC4) ){
-        this->function = &_encrypterRC4;
+    if( !strcmp(method, RC4) ){
+        this->function = _encrypterRC4;
+        _encrypterRC4GenerateSemiRandom(this);
         return SUCCESS;
-    }*/
+    }
     if( !strcmp(method, VIGNERE) ){
-        this->function =  & _encrypterVignere;
+        this->function =  _encrypterVignere;
         return SUCCESS;
     }
     fprintf(stderr, "unknow encryption method \n");
@@ -58,16 +60,47 @@ void encrypterUninit(Encrypter* this){
 
 
 
-void _encrpytorCesar(Encrypter* this, char* msg, size_t size, int mode){
+void _encrypterCesar(Encrypter* this, char* msg, size_t size, int mode){
     int key = atoi(this->key);
     for (size_t i = 0; i < size ; i++){
-        msg[i] += (char) ( (key*mode) ) ;
+        msg[i] += (char) ( (key*mode) );
     }
 }
 
-//void _encryptorRC4(Encrypter* this, char* msg, size_t size,int mode);
+void _encrypterRC4GenerateSemiRandom(struct Encrypter* this){
+    int len = strlen(this->key);
+    int i,j = 0;
+    unsigned char temp;
+    for ( i = 0; i < SEMI_RANDOM_SIZE ; ++i) {
+        (this->semiRandom)[i] = i;
+    }
+    for (i = 0; i < SEMI_RANDOM_SIZE ; ++i) {
+        j = (( j+ (this->semiRandom)[i] + (this->key)[i%len] ) %256 ) ;
+        temp = (this->semiRandom)[i];
+        (this->semiRandom)[i] = (this->semiRandom)[j];
+        (this->semiRandom)[j] = temp;
+    }
+}
 
-void _encryptorVignere(Encrypter* this, char* msg, size_t size, int mode){
+
+void _encrypterRC4(Encrypter* this, char* msg, size_t size,int mode){
+    //ya tenemos generado el semirandom.
+    size_t j = 0;
+    unsigned char* random = this->semiRandom;
+    char temp;
+    for (size_t i = 0; i < size ; ++i) {
+        i = (i+1)%SEMI_RANDOM_SIZE;
+        j = (j + random[i]) %SEMI_RANDOM_SIZE;
+        temp = (random)[i];
+        (random)[i] = (random)[j];
+        (random)[j] = temp;
+        char round = random[random[i] + random[j] %SEMI_RANDOM_SIZE];
+        msg[i] = (round ^ msg[i]);
+    }
+}
+
+
+void _encrypterVignere(Encrypter* this, char* msg, size_t size, int mode){
     char* key = this->key;
     size_t cursor = this->cursor;
 
